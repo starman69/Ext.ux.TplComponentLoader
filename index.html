@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Demo Page</title>
+    <link rel="stylesheet" href="http://cdn.sencha.io/ext-4.2.0-gpl/resources/ext-theme-neptune/ext-theme-neptune-all.css" />
+    <script src="http://cdn.sencha.io/ext-4.2.0-gpl/ext-all.js"></script>
+    <script src="http://cdn.sencha.io/ext-4.2.0-gpl/ext-theme-neptune.js"></script>
+
+    <script src="src/TplComponentLoader.js" type="text/javascript"></script>
+    <script type="text/html" id="embedded-template">
+        <div>
+        Embedded template.<br />
+        Name: {name}
+        </div>
+    </script>
+</head>
+<body>
+<script type="text/javascript">
+    // Sample model define
+    Ext.define('Samples.model.Car', {
+        extend: 'Ext.data.Model',
+        fields: ['id', 'name']
+    });
+
+    // global for easy test in console
+    car = Ext.create({
+        xclass: 'Samples.model.Car',
+        id: 1,
+        name: 'Camaro'
+    });
+
+    // after load in console: 
+    // car.set('name', 'Corvette')
+    // Ext.getCmp('panel3').update({name:'Toyota'})
+
+    Ext.onReady(function () {
+        Ext.create({
+            xclass: 'Ext.Viewport',
+            layout: 'fit',
+            items: [{
+                xtype: 'panel',
+                title: 'TplComponentLoader and Model Binding',
+                defaults: {
+                    margin: 10
+                },
+                items: [{
+                    xtype: 'panel',
+                    id: 'panel1',
+                    title: 'Embedded with Model',
+                    loader: {
+                        renderer: 'tpl',
+                        tplId: 'embedded-template',
+                        autoLoad: true,
+                        model: car
+                    }
+                },{
+                    xtype: 'panel',
+                    id: 'panel2',
+                    title: 'External with Model',
+                    loader: {
+                        renderer: 'tpl',
+                        url: 'template.html',
+                        autoLoad: true,
+                        model: car
+                    }
+                },{
+                    xtype: 'panel',
+                    id: 'panel3',
+                    title: 'Embedded with inline data',
+                    data: {
+                        id: 2, 
+                        name:'Ford'
+                    },
+                    loader: {
+                        renderer: 'tpl',
+                        tplId: 'embedded-template',
+                        autoLoad: true
+                    }
+                }]
+            }]
+        });
+    });
+</script>
+</body>
+</html>
